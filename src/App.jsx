@@ -13,8 +13,8 @@ function AppContent() {
 
   // 处理点击事件
   const handleGetAppId = () => {
-    const appId = sdk.getAppId()
-    console.log('当前子应用身份标识:', appId)
+    const appId = sdk.getAppId();
+    alert('当前子应用身份标识:' + appId);
   }
 
   // 动态注入CSS到style标签

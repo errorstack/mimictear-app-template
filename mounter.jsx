@@ -18,8 +18,8 @@ async function mount(container) {
     env: 'development'
   }
   
-//   import('./src/App.jsx').then(module => {
-  import('./dist/index.js').then(module => {
+  import('./src/App.jsx').then(module => {
+//   import('./dist/index.js').then(module => {
     const App = module.default
     if (App) {
       const root = ReactDOM.createRoot(container)
