@@ -3,22 +3,22 @@ import ReactDOM from 'react-dom/client'
 import { SDKProvider } from '@mimictear/sdk'
 
 /**
- * 开发/预览环境适配层
+ * 开发环境适配层
  * 
- * 动态导入 App 组件并挂载到指定容器
+ * 动态导入 src/App.jsx 并挂载到 #root 节点
  * 使用动态导入方式,与宿主应用的加载方式保持一致
  */
 
-// Mount function for development/preview
-export function mount(container, appModulePath = './src/App.jsx') {
+// Mount function (used by dev mode auto-mount)
+function mount(container) {
   // 模拟父应用提供的上下文
   const parentContext = {
-    appId: import.meta.env.DEV ? 'dev-app' : 'preview-app',
-    userId: import.meta.env.DEV ? 'dev-user' : 'preview-user',
-    env: import.meta.env.DEV ? 'development' : 'preview'
+    appId: 'dev-app',
+    userId: 'dev-user',
+    env: 'development'
   }
   
-  import(appModulePath).then(module => {
+  import('./src/App.jsx').then(module => {
     const App = module.default
     if (App) {
       const root = ReactDOM.createRoot(container)
@@ -38,10 +38,8 @@ export function mount(container, appModulePath = './src/App.jsx') {
   })
 }
 
-// Auto-mount in development mode
-if (typeof document !== 'undefined') {
-  const rootElement = document.getElementById('root')
-  if (rootElement && import.meta.env.DEV) {
-    mount(rootElement)
-  }
+// Auto-mount in development mode only
+const rootElement = document.getElementById('root')
+if (rootElement && import.meta.env.DEV) {
+  mount(rootElement)
 }

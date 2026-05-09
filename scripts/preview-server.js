@@ -17,15 +17,24 @@ try {
   // 设置环境变量
   process.env.VITE_ASSETS_BASE_PATH = '/';
   
-  // 临时修改vite.config.js以包含React
+  // 临时修改vite.config.js以使用preview入口并包含React
   const configPath = path.join(rootDir, 'vite.config.js');
   const originalConfig = fs.readFileSync(configPath, 'utf-8');
   
-  // 创建一个临时的预览配置
-  const previewConfig = originalConfig.replace(
-    /external: \['react', 'react-dom'\]/,
-    '// external: ["react", "react-dom"] // Disabled for preview'
-  );
+  // 创建一个临时的预览配置 - 使用preview.jsx作为入口,并打包React
+  const previewConfig = originalConfig
+    .replace(
+      /entry: '\.\/src\/App\.jsx'/,
+      "entry: './preview.jsx'"
+    )
+    .replace(
+      /name: 'App'/,
+      "name: 'PreviewApp'"
+    )
+    .replace(
+      /external: \['react', 'react-dom'\]/,
+      '// external: ["react", "react-dom"] // Bundled for preview'
+    );
   
   fs.writeFileSync(configPath, previewConfig);
   

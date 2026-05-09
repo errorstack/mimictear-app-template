@@ -10,17 +10,19 @@
     
     <!-- Load and mount the built App (React is bundled) -->
     <script type="module">
-      // Reuse mounter.jsx logic, but import from dist/index.js
-      import('./mounter.jsx').then(mounterModule => {
-        const { mount } = mounterModule;
+      // Import the preview build which includes React
+      import('./dist/index.js').then(module => {
+        const { mount } = module;
         
         if (mount) {
-          // Mount the built app from dist/index.js
-          mount(document.getElementById('root'), './dist/index.js');
+          // Mount the app
+          mount(document.getElementById('root'));
           console.log('✅ App mounted successfully from dist/index.js');
+        } else {
+          throw new Error('mount function not exported');
         }
       }).catch(err => {
-        console.error('❌ Failed to load mounter:', err);
+        console.error('❌ Failed to load App:', err);
         document.getElementById('root').innerHTML = 
           '<p style="color: red;">Failed to load App. Check console for details.</p>';
       });
