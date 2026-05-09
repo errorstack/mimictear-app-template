@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { noInlineAssets } from './vite-plugin-no-inline.js'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), noInlineAssets()],
   resolve: {
     alias: {
       '@mimictear/sdk': path.resolve(__dirname, '../mimictear-sdk/src/index.jsx')
@@ -30,13 +31,24 @@ export default defineConfig({
           '@mimictear/sdk': 'MimicTearSDK'
         },
         // 资源文件输出到assets目录
-        assetFileNames: 'assets/[name]-[hash][extname]'
+        assetFileNames: (assetInfo) => {
+          // 确保所有资源文件都输出到assets目录
+          return 'assets/[name]-[hash][extname]'
+        }
       }
     },
     // 使用相对路径
     assetsDir: 'assets',
     base: './',
-    // 完全禁用base64内联
-    assetsInlineLimit: 0
+    // 完全禁用base64内联，所有资源都作为独立文件处理
+    assetsInlineLimit: 0,
+    // 确保资源文件不被内联
+    cssCodeSplit: false,
+    // 确保所有资源都被正确处理
+    copyPublicDir: true,
+    // 确保sourcemap正确生成
+    sourcemap: false,
+    // 禁用压缩以便调试
+    minify: false
   }
 })

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useSDK } from '@mimictear/sdk'
 import appCss from './App.css?inline'
-import reactLogo from './assets/react.svg?url'
-import viteLogo from './assets/vite.svg?url'
-import testImage from './assets/test.png?url'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import testImage from './assets/test.png'
 
 
 // 使用SDK的组件
