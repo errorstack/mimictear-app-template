@@ -10,21 +10,34 @@
     
     <!-- Load and mount the built App (React is bundled) -->
     <script type="module">
-      import('./dist/index.js').then(module => {
-        const { mount } = module
-        if (mount) {
-          const root = mount(document.getElementById('root'))
-          console.log('✅ App mounted successfully from dist/index.js')
-        } else {
-          console.error('Mount function not exported')
-          document.getElementById('root').innerHTML = 
-            '<p style="color: red;">Mount function not found</p>'
+      // Import SDK first
+      import('./dist/index.js').then(sdkModule => {
+        const { mount, SDKProvider } = sdkModule;
+        
+        if (mount && SDKProvider) {
+          // Create a wrapper component with SDKProvider
+          const AppWithSDK = () => {
+            const parentContext = {
+              appId: 'preview-app',
+              userId: 'preview-user',
+              env: 'preview'
+            };
+            
+            return React.createElement(SDKProvider, { context: parentContext }, 
+              React.createElement(mount, { container: document.getElementById('root') })
+            );
+          };
+          
+          // Actually, we need to modify the approach
+          // Let's just call mount directly since it already handles rendering
+          const root = mount(document.getElementById('root'));
+          console.log('✅ App mounted successfully from dist/index.js');
         }
       }).catch(err => {
-        console.error('❌ Failed to load App:', err)
+        console.error('❌ Failed to load App:', err);
         document.getElementById('root').innerHTML = 
-          '<p style="color: red;">Failed to load App. Check console for details.</p>'
-      })
+          '<p style="color: red;">Failed to load App. Check console for details.</p>';
+      });
     </script>
   </body>
 </html>

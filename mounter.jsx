@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { SDKProvider } from '@mimictear/sdk'
 
 /**
  * 开发环境适配层
@@ -13,10 +14,19 @@ if (rootElement) {
   import('./src/App.jsx').then(module => {
     const App = module.default
     if (App) {
+      // 模拟父应用提供的上下文
+      const parentContext = {
+        appId: 'dev-app',
+        userId: 'dev-user',
+        env: 'development'
+      }
+      
       const root = ReactDOM.createRoot(rootElement)
       root.render(
         <React.StrictMode>
-          <App />
+          <SDKProvider context={parentContext}>
+            <App />
+          </SDKProvider>
         </React.StrictMode>
       )
     } else {

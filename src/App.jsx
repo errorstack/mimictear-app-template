@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
+import { SDKProvider, useSDK } from '@mimictear/sdk'
 import appCss from './App.css?inline'
 import indexCss from './index.css?inline'
 
 // 资源配置
 const ASSETS_BASE_PATH = import.meta.env.VITE_ASSETS_BASE_PATH || '/'
 
-function App() {
+// 使用SDK的组件
+function AppContent() {
+  const sdk = useSDK()
   const [count, setCount] = useState(0)
   const [logos, setLogos] = useState({ reactLogo: '', viteLogo: '' })
 
@@ -30,6 +33,12 @@ function App() {
       })
     }
   }, [])
+
+  // 处理点击事件
+  const handleGetAppId = () => {
+    const appId = sdk.getAppId()
+    console.log('当前子应用身份标识:', appId)
+  }
 
   // 动态注入CSS到style标签
   useEffect(() => {
@@ -74,6 +83,14 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
+      
+      {/* SDK测试按钮 */}
+      <div className="card" style={{ marginTop: '20px' }}>
+        <h3>SDK Test</h3>
+        <p>Current App ID: {sdk.getAppId()}</p>
+        <button onClick={handleGetAppId}>Get App ID</button>
+      </div>
+      
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
@@ -81,10 +98,27 @@ function App() {
   )
 }
 
+function App() {
+  return <AppContent />
+}
+
 // Mount function for preview/testing
 export function mount(container) {
   const root = createRoot(container)
-  root.render(<App />)
+  
+  // 模拟父应用提供的上下文
+  const parentContext = {
+    appId: 'preview-app',
+    userId: 'preview-user',
+    env: 'preview'
+  }
+  
+  root.render(
+    <SDKProvider context={parentContext}>
+      <App />
+    </SDKProvider>
+  )
+  
   return root
 }
 

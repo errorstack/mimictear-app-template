@@ -1,10 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import url from '@rollup/plugin-url'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@mimictear/sdk': path.resolve(__dirname, '../mimictear-sdk/src/index.jsx')
+    }
+  },
   define: {
     'process.env.NODE_ENV': JSON.stringify('production'),
     'process.env': {}
@@ -25,14 +30,7 @@ export default defineConfig({
         },
         // 资源文件输出到assets目录
         assetFileNames: 'assets/[name]-[hash][extname]'
-      },
-      plugins: [
-        url({
-          include: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp'],
-          limit: 0, // 不内联任何文件
-          emitFiles: true
-        })
-      ]
+      }
     },
     // 使用相对路径
     assetsDir: 'assets',
