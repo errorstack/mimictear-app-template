@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSDK } from '@mimictear/sdk'
 import appCss from './App.css?inline'
-import indexCss from './index.css?inline'
 import reactLogo from './assets/react.svg?url'
 import viteLogo from './assets/vite.svg?url'
 import testImage from './assets/test.png?url'
@@ -20,8 +19,8 @@ function AppContent() {
 
   // 动态注入CSS到style标签
   useEffect(() => {
-    // 合并所有CSS
-    const allCss = `${indexCss}\n${appCss}`
+    // 使用App.css中的样式（已包含全局样式）
+    const allCss = appCss
     
     // 创建style标签
     const style = document.createElement('style')
