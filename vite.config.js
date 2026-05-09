@@ -46,9 +46,7 @@ export default defineConfig({
     cssCodeSplit: false,
     // 确保所有资源都被正确处理
     copyPublicDir: true,
-    // 确保sourcemap正确生成
     sourcemap: false,
-    // 禁用压缩以便调试
-    minify: false
+    minify: true
   }
 })
