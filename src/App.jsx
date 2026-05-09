@@ -4,6 +4,8 @@ import appCss from './App.css?inline'
 import indexCss from './index.css?inline'
 import reactLogo from './assets/react.svg?url'
 import viteLogo from './assets/vite.svg?url'
+import testImage from './assets/test.png?url'
+
 
 // 使用SDK的组件
 function AppContent() {
@@ -65,6 +67,12 @@ function AppContent() {
         <h3>SDK Test</h3>
         <p>Current App ID: {sdk.getAppId()}</p>
         <button onClick={handleGetAppId}>Get App ID</button>
+      </div>
+      
+      {/* 测试图片 */}
+      <div className="card" style={{ marginTop: '20px' }}>
+        <h3>Test Image</h3>
+        <img src={testImage} alt="Test" style={{ maxWidth: '100%', height: 'auto' }} />
       </div>
       
       <p className="read-the-docs">
