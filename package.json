@@ -1,0 +1,33 @@
+{
+  "name": "mimictear-app-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "node scripts/preview-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/errorstack/mimictear-app-template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/errorstack/mimictear-app-template/issues"
+  },
+  "homepage": "https://github.com/errorstack/mimictear-app-template#readme",
+  "dependencies": {
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@rollup/plugin-url": "^8.0.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "open": "^11.0.0",
+    "vite": "^8.0.11"
+  }
+}
