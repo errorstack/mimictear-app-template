@@ -47,6 +47,15 @@ export default defineConfig({
     // 确保所有资源都被正确处理
     copyPublicDir: true,
     sourcemap: false,
-    minify: true
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      },
+      format: {
+        comments: false
+      }
+    }
   }
 })
