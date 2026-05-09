@@ -10,31 +10,17 @@
     
     <!-- Load and mount the built App (React is bundled) -->
     <script type="module">
-      // Import SDK first
-      import('./dist/index.js').then(sdkModule => {
-        const { mount, SDKProvider } = sdkModule;
+      // Reuse mounter.jsx logic, but import from dist/index.js
+      import('./mounter.jsx').then(mounterModule => {
+        const { mount } = mounterModule;
         
-        if (mount && SDKProvider) {
-          // Create a wrapper component with SDKProvider
-          const AppWithSDK = () => {
-            const parentContext = {
-              appId: 'preview-app',
-              userId: 'preview-user',
-              env: 'preview'
-            };
-            
-            return React.createElement(SDKProvider, { context: parentContext }, 
-              React.createElement(mount, { container: document.getElementById('root') })
-            );
-          };
-          
-          // Actually, we need to modify the approach
-          // Let's just call mount directly since it already handles rendering
-          const root = mount(document.getElementById('root'));
+        if (mount) {
+          // Mount the built app from dist/index.js
+          mount(document.getElementById('root'), './dist/index.js');
           console.log('✅ App mounted successfully from dist/index.js');
         }
       }).catch(err => {
-        console.error('❌ Failed to load App:', err);
+        console.error('❌ Failed to load mounter:', err);
         document.getElementById('root').innerHTML = 
           '<p style="color: red;">Failed to load App. Check console for details.</p>';
       });

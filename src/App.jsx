@@ -1,38 +1,14 @@
 import { useState, useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
-import { SDKProvider, useSDK } from '@mimictear/sdk'
+import { useSDK } from '@mimictear/sdk'
 import appCss from './App.css?inline'
 import indexCss from './index.css?inline'
-
-// 资源配置
-const ASSETS_BASE_PATH = import.meta.env.VITE_ASSETS_BASE_PATH || '/'
+import reactLogo from './assets/react.svg?url'
+import viteLogo from './assets/vite.svg?url'
 
 // 使用SDK的组件
 function AppContent() {
   const sdk = useSDK()
   const [count, setCount] = useState(0)
-  const [logos, setLogos] = useState({ reactLogo: '', viteLogo: '' })
-
-  // dev模式下动态加载图片
-  useEffect(() => {
-    if (import.meta.env.DEV) {
-      Promise.all([
-        import('./assets/react.svg'),
-        import('./assets/vite.svg')
-      ]).then(([reactMod, viteMod]) => {
-        setLogos({
-          reactLogo: reactMod.default,
-          viteLogo: viteMod.default
-        })
-      })
-    } else {
-      // build/preview模式使用配置的路径
-      setLogos({
-        reactLogo: `${ASSETS_BASE_PATH}assets/react.svg`,
-        viteLogo: `${ASSETS_BASE_PATH}assets/vite.svg`
-      })
-    }
-  }, [])
 
   // 处理点击事件
   const handleGetAppId = () => {
@@ -68,10 +44,10 @@ function AppContent() {
     <>
       <div>
         <a href="https://vite.dev" target="_blank">
-          {logos.viteLogo && <img src={logos.viteLogo} className="logo" alt="Vite logo" />}
+          <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
         <a href="https://react.dev" target="_blank">
-          {logos.reactLogo && <img src={logos.reactLogo} className="logo react" alt="React logo" />}
+          <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
@@ -100,26 +76,6 @@ function AppContent() {
 
 function App() {
   return <AppContent />
-}
-
-// Mount function for preview/testing
-export function mount(container) {
-  const root = createRoot(container)
-  
-  // 模拟父应用提供的上下文
-  const parentContext = {
-    appId: 'preview-app',
-    userId: 'preview-user',
-    env: 'preview'
-  }
-  
-  root.render(
-    <SDKProvider context={parentContext}>
-      <App />
-    </SDKProvider>
-  )
-  
-  return root
 }
 
 export default App
