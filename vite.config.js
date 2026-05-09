@@ -22,11 +22,12 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', '@mimictear/sdk'],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM'
+          'react-dom': 'ReactDOM',
+          '@mimictear/sdk': 'MimicTearSDK'
         },
         // 资源文件输出到assets目录
         assetFileNames: 'assets/[name]-[hash][extname]'
