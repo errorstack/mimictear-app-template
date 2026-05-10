@@ -5,7 +5,7 @@ import { SDKProvider } from '@mimictear/sdk'
 /**
  * 开发环境入口
  * 
- * 动态导入 App 组件并挂载到 #root 节点
+ * 动态导入 App 组件并挂载到 Shadow DOM 中
  * 使用动态导入方式,与宿主应用的加载方式保持一致
  */
 
@@ -18,11 +18,23 @@ async function mount(container) {
     env: 'development'
   }
   
+  // 创建 Shadow DOM
+  const shadowHost = document.createElement('div')
+  shadowHost.id = 'shadow-host'
+  container.appendChild(shadowHost)
+  
+  const shadowRoot = shadowHost.attachShadow({ mode: 'open' })
+  
+  // 创建一个容器用于 React 渲染
+  const reactContainer = document.createElement('div')
+  reactContainer.id = 'react-root'
+  shadowRoot.appendChild(reactContainer)
+  
   import('./src/App.jsx').then(module => {
 //   import('./dist/index.js').then(module => {
     const App = module.default
     if (App) {
-      const root = ReactDOM.createRoot(container)
+      const root = ReactDOM.createRoot(reactContainer)
       root.render(
         <SDKProvider context={parentContext}>
             <App />

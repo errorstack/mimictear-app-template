@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSDK } from '@mimictear/sdk'
 import appCss from './App.css?inline'
 import reactLogo from './assets/react.svg'
@@ -17,32 +17,11 @@ function AppContent() {
     alert('当前子应用身份标识:' + appId);
   }
 
-  // 动态注入CSS到style标签
-  useEffect(() => {
-    // 使用App.css中的样式（已包含全局样式）
-    const allCss = appCss
-    
-    // 创建style标签
-    const style = document.createElement('style')
-    style.textContent = allCss
-    style.setAttribute('data-app-styles', 'true')
-    
-    // 插入到document.head或shadow root
-    const targetHead = document.head || document.querySelector('head')
-    if (targetHead) {
-      targetHead.appendChild(style)
-    }
-    
-    // 清理函数
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style)
-      }
-    }
-  }, [])
-
   return (
     <>
+      {/* 动态注入CSS到Shadow DOM */}
+      <style dangerouslySetInnerHTML={{ __html: appCss }} />
+      
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
