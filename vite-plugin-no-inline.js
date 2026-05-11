@@ -89,7 +89,7 @@ export function noInlineAssets() {
           }
         } else {
           // 生产环境：使用 /dist/assets/ 路径
-          assetPath = `http://apps.asset.localhost/${appId}/assets/${fileName}`
+          assetPath = `http://asset.localhost/apps/${appId}/assets/${fileName}`
         }
         
         return {
