@@ -1,7 +1,8 @@
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
+import os from 'os';
 import { fileURLToPath } from 'url';
 import { ZipArchive } from 'archiver';
 
@@ -140,6 +141,10 @@ function startServer() {
     console.log(`   Local:   http://localhost:${PORT}`);
     console.log(`   Network: http://<your-ip>:${PORT}`);
     console.log(`   MAPP file: http://localhost:${PORT}/${mappFileName}`);
+    
+    // Step 4: 执行安装和打开应用命令
+    installAndOpenApp(PORT, mappFileName, appId);
+    
     console.log(`\nPress Ctrl+C to stop the server`);
   });
   
@@ -149,4 +154,45 @@ function startServer() {
     server.close();
     process.exit(0);
   });
+}
+
+// Step 4: 安装并打开应用
+function installAndOpenApp(port, mappFileName, appId) {
+  // 获取用户 AppData/Local 路径
+  const appDataLocal = process.env.LOCALAPPDATA || path.join(os.homedir(), 'AppData', 'Local');
+  const mimicTearExe = path.join(appDataLocal, 'Mimic Tear', 'mimic-tear.exe');
+  
+  // 检查 mimic-tear.exe 是否存在
+  if (!fs.existsSync(mimicTearExe)) {
+    console.warn(`\n⚠️  Warning: mimic-tear.exe not found at ${mimicTearExe}`);
+    console.warn('   Please make sure Mimic Tear is installed.');
+    return;
+  }
+  
+  const mappUrl = `http://localhost:${port}/${mappFileName}`;
+  
+  console.log(`\n📲 Installing and opening app...`);
+  console.log(`   Command: "${mimicTearExe}" -- install-app ${mappUrl} -- open-app ${appId}`);
+  
+  try {
+    // 执行完整的命令（一条命令）
+    const child = spawn(mimicTearExe, ['--', 'install-app', mappUrl, '--', 'open-app', appId], {
+      stdio: 'inherit'
+    });
+    
+    child.on('error', (err) => {
+      console.error('❌ Failed to execute command:', err.message);
+    });
+    
+    child.on('exit', (code) => {
+      if (code === 0) {
+        console.log('✅ Command executed successfully!');
+      } else {
+        console.error(`❌ Command failed with exit code: ${code}`);
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Failed to execute command:', error.message);
+  }
 }
