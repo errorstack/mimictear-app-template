@@ -17,6 +17,11 @@ function AppContent() {
     alert('当前子应用身份标识:' + appId);
   }
 
+  // 处理关闭应用
+  const handleCloseApp = () => {
+    sdk.closeApp();
+  }
+
   return (
     <>
       {/* 动态注入CSS到Shadow DOM */}
@@ -45,6 +50,7 @@ function AppContent() {
         <h3>SDK Test</h3>
         <p>Current App ID: {sdk.getAppId()}</p>
         <button onClick={handleGetAppId}>Get App ID</button>
+        <button onClick={handleCloseApp} style={{ marginLeft: '10px', backgroundColor: '#ff4d4f', color: 'white' }}>Close App</button>
       </div>
       
       {/* 测试图片 */}
