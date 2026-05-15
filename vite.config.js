@@ -1,11 +1,38 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import fs from 'fs'
 import { noInlineAssets } from './vite-plugin-no-inline.js'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), noInlineAssets()],
+  plugins: [
+    react(), 
+    noInlineAssets(),
+    {
+      name: 'copy-skills',
+      closeBundle() {
+        const skillsSrc = path.resolve(__dirname, 'skills')
+        const skillsDest = path.resolve(__dirname, 'dist', 'skills')
+        
+        if (fs.existsSync(skillsSrc)) {
+          // 创建目标目录
+          if (!fs.existsSync(skillsDest)) {
+            fs.mkdirSync(skillsDest, { recursive: true })
+          }
+          
+          // 复制所有文件
+          const files = fs.readdirSync(skillsSrc)
+          files.forEach(file => {
+            const srcFile = path.join(skillsSrc, file)
+            const destFile = path.join(skillsDest, file)
+            fs.copyFileSync(srcFile, destFile)
+            console.log(`✓ Copied skill: ${file}`)
+          })
+        }
+      }
+    }
+  ],
   resolve: {
     alias: {
       '@mimictear/sdk': path.resolve(__dirname, '../mimictear-sdk/src/index.jsx')

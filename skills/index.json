@@ -1,0 +1,8 @@
+{
+ "collect_question": {
+    "name": "收录题目",
+    "description": "当用户需要收录题目时，可以使用此技能。该技能可以通过用户提供的图片，自动识别题目并保存到用户个人库中。",
+    "functions": [],
+    "workflow": "collect_question.md"
+ }
+}
